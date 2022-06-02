@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
 * Студент: [Таисия Радостева](https://up.htmlacademy.ru/javascript/26/user/1895001).
-* Наставник: `Неизвестно`.
+* Наставник: [Алексей Хабиров](https://htmlacademy.ru/profile/alex_khab).
 
 ---
 
