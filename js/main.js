@@ -1,39 +1,43 @@
 // Функция, возвращающая случайное целое число из переданного диапазона включительно
-const getRandomInteger = (min, max) => { // https://developer.mozilla.org/ Math.random()
-  if (min > max) {
+const getRandomPositiveInteger = (a, b) => {
+  const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
+  const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
+
+  if (lower > upper) {
     throw new RangeError ('Минимальное значение не может быть больше максимального.');
   }
 
-  if (min === max) {
-    return min;
+  if (lower === upper) {
+    return lower;
   }
 
-  if (min < 0 || max < 0) {
+  if (lower < 0 || upper < 0) {
     throw new RangeError ('Значения могут быть только положительными либо равными нулю.');
   }
 
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+  return Math.floor(Math.random() * (upper - lower + 1) + lower);
 };
 
-getRandomInteger(13, 15);
+getRandomPositiveInteger(15, 0);
 
 // Функция, возвращающая случайное число с плавающей точкой из переданного диапазона включительно
-const getRandomFloat = (min, max, precision = 5) => {
-  if (min > max) {
+const getRandomPositiveFloat = (a, b, digits = 5) => {
+  const lower = Math.min(Math.abs(a), Math.abs(b));
+  const upper = Math.max(Math.abs(a), Math.abs(b));
+
+  if (lower > upper) {
     throw new RangeError ('Минимальное значение не может быть больше максимального.');
   }
 
-  if (min === max) {
-    return min;
+  if (lower === upper) {
+    return lower;
   }
 
-  if (min < 0 || max < 0) {
+  if (lower < 0 || upper < 0) {
     throw new RangeError ('Значения могут быть только положительными либо равными нулю.');
   }
 
-  return Number((Math.random() * (max - min)) + min).toFixed(precision);
+  return Number((Math.random() * (upper - lower)) + lower).toFixed(digits);
 };
 
-getRandomFloat(5.15, 5.99);
+getRandomPositiveFloat(6, 100);
