@@ -79,17 +79,15 @@ const getRandomPositiveFloat = (a, b, digits = 5) => {
 // Функция, возвращающая случайный элемент массива
 const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length - 1)];
 
-
 // Функция, возвращающая объект с объявлением неподалёку
-const createOffer = (id) => {
+const createOffer = (count) => {
   const lat = getRandomPositiveFloat(ApartmentLocation.LAT_LOWER, ApartmentLocation.LAT_UPPER, 5);
   const lng = getRandomPositiveFloat(ApartmentLocation.LNG_LOWER, ApartmentLocation.LNG_UPPER, 5);
 
   return {
     author: {
-      avatar: `img/avatars/user${String(id).padStart(2, '0')}.png`
+      avatar: `img/avatars/user${String(count).padStart(2, '0')}.png`
     },
-
     offer: {
       title: 'Апартаменты в самом центре Токио',
       address: `${lat}, ${lng}`,
@@ -103,7 +101,6 @@ const createOffer = (id) => {
       description: 'Уютные апартаменты со всем необходимым',
       photos: PHOTOS.slice(0, getRandomPositiveInteger(1, PHOTOS.length))
     },
-
     location: {
       lat,
       lng
@@ -112,14 +109,6 @@ const createOffer = (id) => {
 };
 
 // Создание массива с объявлениями
-const creatingOffersArray = (id) => {
-  const offersArray = [];
+const createOffers = () => Array.from({length: OFFERS_COUNT}, (_, index) => createOffer(index + 1));
 
-  for (let i = 1; i <= id; i++) {
-    offersArray.push(createOffer(i));
-  }
-
-  return offersArray;
-};
-
-creatingOffersArray(OFFERS_COUNT);
+createOffers(OFFERS_COUNT);
