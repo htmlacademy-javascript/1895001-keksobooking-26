@@ -42,7 +42,7 @@ const generatePopup = ({author, offer}) => {
     featuresList.classList.add('hidden');
   }
 
-  if (offer.photos) {
+  if (offer.photos.length > 0) {
     renderPhotos(photosContainer, photoItem, offer.photos);
   } else {
     photosContainer.classList.add('hidden');
