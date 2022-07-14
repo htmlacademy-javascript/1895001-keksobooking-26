@@ -3,4 +3,7 @@ import {generatePopup} from './generate-popup.js';
 
 const mapCanvas = document.querySelector('#map-canvas');
 
-mapCanvas.appendChild(generatePopup(createOffers()[0]));
+const offers = createOffers();
+const popup = generatePopup(offers[0]);
+
+mapCanvas.appendChild(popup);
