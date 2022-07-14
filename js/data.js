@@ -70,6 +70,4 @@ const createOffer = (count) => {
 // Создание массива с объявлениями
 const createOffers = () => Array.from({length: OFFERS_COUNT}, (_, index) => createOffer(index + 1));
 
-createOffers(OFFERS_COUNT);
-
 export {createOffers};
