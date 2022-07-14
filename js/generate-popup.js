@@ -36,18 +36,6 @@ const generatePopup = ({author, offer}) => {
   const photoItem = photosContainer.querySelector('.popup__photo');
   const description = offerElement.querySelector('.popup__description');
 
-  if (offer.features) {
-    featuresList.forEach((featureListItem) => {
-      const isNecessary = offer.features.some((feature) => featureListItem.classList.contains(`popup__feature--${feature}`));
-
-      if (!isNecessary) {
-        featureListItem.remove();
-      }
-    });
-  } else {
-    featuresContainer.classList.add('hidden');
-  }
-
   if (offer.features.length > 0) {
     renderFeatures(featuresList, offer.features);
   } else {
