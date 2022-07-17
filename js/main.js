@@ -1,6 +1,6 @@
 import {createOffers} from './data.js';
 import {generatePopup} from './generate-popup.js';
-import {disableForm, activateForm, activateFilters} from './form.js';
+import {disableForm, activateForm, activateFilters, initValidation} from './form.js';
 
 const mapCanvas = document.querySelector('#map-canvas');
 
@@ -12,3 +12,4 @@ mapCanvas.appendChild(popup);
 disableForm();
 activateFilters();
 activateForm();
+initValidation();
