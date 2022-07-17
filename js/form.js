@@ -4,6 +4,19 @@ const mapFilters = document.querySelector('.map__filters');
 const mapFiltersElements = mapFilters.children;
 const rooms = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
+const price = adForm.querySelector('#price');
+const type = adForm.querySelector('#type');
+// const timeFieldset = adForm.querySelector('.ad-form__element--time');
+// const time = timeFieldset.querySelectorAll('select');
+const TYPES_MAX_PRICE = 100000;
+
+const TypesMinPrice = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000
+};
 
 const pristine = new Pristine(adForm, {
   classTo: 'ad-form__element',
@@ -27,6 +40,10 @@ const getCapacityErrorMessage = () => {
 
   return capacity.value === '0' ? 'Это жилье для гостей' : 'Мало комнат';
 };
+
+const validatePrice = (value) => value <= TYPES_MAX_PRICE && value >= TypesMinPrice[type.value];
+
+const getPriceErrorMessage = () => `Цена этого жилья должна быть от ${TypesMinPrice[type.value]} до ${TYPES_MAX_PRICE}`;
 
 const toggleElement = (elementsList, value) => {
   for (const element of elementsList) {
@@ -56,6 +73,14 @@ const activateFilters = () => {
 
 const initValidation = () => {
   pristine.addValidator(capacity, validateCapacity, getCapacityErrorMessage);
+  pristine.addValidator(price, validatePrice, getPriceErrorMessage);
+
+  const onTypeChange = () => {
+    price.placeholder = TypesMinPrice[type.value];
+    pristine.validate(price);
+  };
+
+  type.addEventListener('change', onTypeChange);
 
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
