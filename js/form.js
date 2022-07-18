@@ -2,6 +2,21 @@ const adForm = document.querySelector('.ad-form');
 const adFormElements = adForm.children;
 const mapFilters = document.querySelector('.map__filters');
 const mapFiltersElements = mapFilters.children;
+const rooms = adForm.querySelector('#room_number');
+const capacity = adForm.querySelector('#capacity');
+const price = adForm.querySelector('#price');
+const type = adForm.querySelector('#type');
+const timeFieldset = adForm.querySelector('.ad-form__element--time');
+const times = timeFieldset.querySelectorAll('select');
+const TYPES_MAX_PRICE = 100000;
+
+const TypesMinPrice = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000
+};
 
 const pristine = new Pristine(adForm, {
   classTo: 'ad-form__element',
@@ -9,16 +24,14 @@ const pristine = new Pristine(adForm, {
   errorTextClass: 'ad-form__error-text'
 }, false);
 
-const rooms = adForm.querySelector('#room_number');
-const capacity = adForm.querySelector('#capacity');
-const GuestsCapacity = {
-  '1': ['1'],
-  '2': ['1', '2'],
-  '3': ['1', '2', '3'],
-  '100': ['0']
+const guestsCapacityMap = {
+  1: ['1'],
+  2: ['1', '2'],
+  3: ['1', '2', '3'],
+  100: ['0']
 };
 
-const validateCapacity = () => GuestsCapacity[rooms.value].includes(capacity.value);
+const validateCapacity = () => guestsCapacityMap[rooms.value].includes(capacity.value);
 
 const getCapacityErrorMessage = () => {
   if (rooms.value === '100') {
@@ -28,12 +41,9 @@ const getCapacityErrorMessage = () => {
   return capacity.value === '0' ? 'Это жилье для гостей' : 'Мало комнат';
 };
 
-pristine.addValidator(capacity, validateCapacity, getCapacityErrorMessage);
+const validatePrice = (value) => value <= TYPES_MAX_PRICE && value >= TypesMinPrice[type.value];
 
-adForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  pristine.validate();
-});
+const getPriceErrorMessage = () => `Цена этого жилья должна быть от ${TypesMinPrice[type.value]} до ${TYPES_MAX_PRICE}`;
 
 const toggleElement = (elementsList, value) => {
   for (const element of elementsList) {
@@ -61,4 +71,40 @@ const activateFilters = () => {
   toggleElement(mapFiltersElements, false);
 };
 
-export {disableForm, activateForm, activateFilters};
+const initValidation = () => {
+  pristine.addValidator(capacity, validateCapacity, getCapacityErrorMessage);
+  pristine.addValidator(price, validatePrice, getPriceErrorMessage);
+
+  const onTypeChange = () => {
+    price.placeholder = TypesMinPrice[type.value];
+    pristine.validate(price);
+  };
+
+  const onTimeChange = (evt) => {
+    for (const time of times) {
+      if (time !== evt.target) {
+        time.value = evt.target.value;
+      }
+    }
+  };
+
+  const onRoomsChange = () => {
+    pristine.validate(capacity);
+  };
+
+  const onPriceChange = () => {
+    pristine.validate(price);
+  };
+
+  type.addEventListener('change', onTypeChange);
+  timeFieldset.addEventListener('change', onTimeChange);
+  capacity.addEventListener('change', onRoomsChange);
+  price.addEventListener('change', onPriceChange);
+
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    pristine.validate();
+  });
+};
+
+export {disableForm, activateForm, activateFilters, initValidation};
