@@ -45,6 +45,27 @@ const validatePrice = (value) => value <= TYPES_MAX_PRICE && value >= TypesMinPr
 
 const getPriceErrorMessage = () => `Цена этого жилья должна быть от ${TypesMinPrice[type.value]} до ${TYPES_MAX_PRICE}`;
 
+const onTypeChange = () => {
+  price.placeholder = TypesMinPrice[type.value];
+  pristine.validate(price);
+};
+
+const onTimeChange = (evt) => {
+  for (const time of times) {
+    if (time !== evt.target) {
+      time.value = evt.target.value;
+    }
+  }
+};
+
+const onRoomsChange = () => {
+  pristine.validate(capacity);
+};
+
+const onPriceChange = () => {
+  pristine.validate(price);
+};
+
 const toggleElement = (elementsList, value) => {
   for (const element of elementsList) {
     element.disabled = value;
@@ -74,27 +95,6 @@ const activateFilters = () => {
 const initValidation = () => {
   pristine.addValidator(capacity, validateCapacity, getCapacityErrorMessage);
   pristine.addValidator(price, validatePrice, getPriceErrorMessage);
-
-  const onTypeChange = () => {
-    price.placeholder = TypesMinPrice[type.value];
-    pristine.validate(price);
-  };
-
-  const onTimeChange = (evt) => {
-    for (const time of times) {
-      if (time !== evt.target) {
-        time.value = evt.target.value;
-      }
-    }
-  };
-
-  const onRoomsChange = () => {
-    pristine.validate(capacity);
-  };
-
-  const onPriceChange = () => {
-    pristine.validate(price);
-  };
 
   type.addEventListener('change', onTypeChange);
   timeFieldset.addEventListener('change', onTimeChange);
