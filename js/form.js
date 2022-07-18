@@ -6,8 +6,8 @@ const rooms = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
 const price = adForm.querySelector('#price');
 const type = adForm.querySelector('#type');
-// const timeFieldset = adForm.querySelector('.ad-form__element--time');
-// const time = timeFieldset.querySelectorAll('select');
+const timeFieldset = adForm.querySelector('.ad-form__element--time');
+const times = timeFieldset.querySelectorAll('select');
 const TYPES_MAX_PRICE = 100000;
 
 const TypesMinPrice = {
@@ -80,7 +80,26 @@ const initValidation = () => {
     pristine.validate(price);
   };
 
+  const onTimeChange = (evt) => {
+    for (const time of times) {
+      if (time !== evt.target) {
+        time.value = evt.target.value;
+      }
+    }
+  };
+
+  const onRoomsChange = () => {
+    pristine.validate(capacity);
+  };
+
+  const onPriceChange = () => {
+    pristine.validate(price);
+  };
+
   type.addEventListener('change', onTypeChange);
+  timeFieldset.addEventListener('change', onTimeChange);
+  capacity.addEventListener('change', onRoomsChange);
+  price.addEventListener('change', onPriceChange);
 
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
