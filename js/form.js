@@ -5,6 +5,7 @@ const mapFiltersElements = mapFilters.children;
 const rooms = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
 const price = adForm.querySelector('#price');
+const priceSlider = adForm.querySelector('.ad-form__slider');
 const type = adForm.querySelector('#type');
 const timeFieldset = adForm.querySelector('.ad-form__element--time');
 const times = timeFieldset.querySelectorAll('select');
@@ -66,6 +67,37 @@ const onPriceChange = () => {
   pristine.validate(price);
 };
 
+const initPriceSlider = () => {
+  const onTypeSelectChange = () => {
+    priceSlider.noUiSlider.set(TypesMinPrice[type.value]);
+  };
+
+  noUiSlider.create(priceSlider, {
+    range: {
+      min: 0,
+      max: TYPES_MAX_PRICE,
+    },
+    start: TypesMinPrice.flat,
+    step: 1,
+    connect: 'lower',
+    format: {
+      to: function (value) {
+        return value.toFixed(0);
+      },
+      from: function (value) {
+        return parseFloat(value);
+      },
+    },
+  });
+
+  priceSlider.noUiSlider.on('update', () => {
+    price.value = priceSlider.noUiSlider.get();
+  });
+
+  type.addEventListener('change', onTypeSelectChange);
+  priceSlider.noUiSlider.on('change', onPriceChange);
+};
+
 const toggleElement = (elementsList, value) => {
   for (const element of elementsList) {
     element.disabled = value;
@@ -107,4 +139,4 @@ const initValidation = () => {
   });
 };
 
-export {disableForm, activateForm, activateFilters, initValidation};
+export {disableForm, activateForm, activateFilters, initValidation, initPriceSlider};
