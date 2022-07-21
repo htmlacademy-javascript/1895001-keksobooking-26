@@ -265,6 +265,10 @@ fieldset {
   width: 100%;
 }
 
+.ad-form__error-text {
+  color: #ff0000;
+}
+
 .ad-form--disabled {
   opacity: 0.3;
   pointer-events: none;

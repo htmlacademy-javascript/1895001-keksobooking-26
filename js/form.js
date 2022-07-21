@@ -5,6 +5,7 @@ const mapFiltersElements = mapFilters.children;
 const rooms = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
 const price = adForm.querySelector('#price');
+const priceSlider = adForm.querySelector('.ad-form__slider');
 const type = adForm.querySelector('#type');
 const timeFieldset = adForm.querySelector('.ad-form__element--time');
 const times = timeFieldset.querySelectorAll('select');
@@ -45,6 +46,58 @@ const validatePrice = (value) => value <= TYPES_MAX_PRICE && value >= TypesMinPr
 
 const getPriceErrorMessage = () => `Цена этого жилья должна быть от ${TypesMinPrice[type.value]} до ${TYPES_MAX_PRICE}`;
 
+const onTypeChange = () => {
+  price.placeholder = TypesMinPrice[type.value];
+  pristine.validate(price);
+};
+
+const onTimeChange = (evt) => {
+  for (const time of times) {
+    if (time !== evt.target) {
+      time.value = evt.target.value;
+    }
+  }
+};
+
+const onRoomsChange = () => {
+  pristine.validate(capacity);
+};
+
+const onPriceChange = () => {
+  pristine.validate(price);
+};
+
+const initPriceSlider = () => {
+  const onTypeSelectChange = () => {
+    priceSlider.noUiSlider.set(TypesMinPrice[type.value]);
+  };
+
+  noUiSlider.create(priceSlider, {
+    range: {
+      min: 0,
+      max: TYPES_MAX_PRICE,
+    },
+    start: TypesMinPrice.flat,
+    step: 1,
+    connect: 'lower',
+    format: {
+      to: function (value) {
+        return value.toFixed(0);
+      },
+      from: function (value) {
+        return parseFloat(value);
+      },
+    },
+  });
+
+  priceSlider.noUiSlider.on('update', () => {
+    price.value = priceSlider.noUiSlider.get();
+  });
+
+  type.addEventListener('change', onTypeSelectChange);
+  priceSlider.noUiSlider.on('change', onPriceChange);
+};
+
 const toggleElement = (elementsList, value) => {
   for (const element of elementsList) {
     element.disabled = value;
@@ -75,27 +128,6 @@ const initValidation = () => {
   pristine.addValidator(capacity, validateCapacity, getCapacityErrorMessage);
   pristine.addValidator(price, validatePrice, getPriceErrorMessage);
 
-  const onTypeChange = () => {
-    price.placeholder = TypesMinPrice[type.value];
-    pristine.validate(price);
-  };
-
-  const onTimeChange = (evt) => {
-    for (const time of times) {
-      if (time !== evt.target) {
-        time.value = evt.target.value;
-      }
-    }
-  };
-
-  const onRoomsChange = () => {
-    pristine.validate(capacity);
-  };
-
-  const onPriceChange = () => {
-    pristine.validate(price);
-  };
-
   type.addEventListener('change', onTypeChange);
   timeFieldset.addEventListener('change', onTimeChange);
   capacity.addEventListener('change', onRoomsChange);
@@ -107,4 +139,4 @@ const initValidation = () => {
   });
 };
 
-export {disableForm, activateForm, activateFilters, initValidation};
+export {disableForm, activateForm, activateFilters, initValidation, initPriceSlider};
