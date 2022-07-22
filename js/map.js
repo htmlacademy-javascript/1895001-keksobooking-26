@@ -1,13 +1,21 @@
 import {createOffers} from './data.js';
 import {generatePopup} from './generate-popup.js';
-import {activateForm, activateFilters} from './form.js';
+import {activateForm, activateFilters} from './form.js'; // eslint-disable-line no-unused-vars
 
-// const mapCanvas = document.querySelector('#map-canvas');
 const address = document.querySelector('#address');
 
 const DEFAULT_COORDINATES = {
   lat: 35.68483,
   lng: 139.75248
+};
+
+const DEFAULT_ZOOM =  12;
+
+const MAP_SETTINGS = {
+  layer: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  attribution: {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  },
 };
 
 const mainPinIcon = L.icon({
@@ -24,7 +32,11 @@ const pinIcon = L.icon({
 
 const similarOffers = createOffers(10);
 
-const createMarkers = (map, offers) => {
+const setAddress = ({lat, lng}) => {
+  address.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+};
+
+const renderMarkers = (map, offers) => {
   offers.forEach((offer) => {
     const {
       location: {
@@ -51,17 +63,13 @@ const createMarkers = (map, offers) => {
 const initMap = () => {
   const map = L.map('map-canvas')
     .on('load', () => {
-      activateFilters();
+      // activateFilters();
+      setAddress(DEFAULT_COORDINATES);
       activateForm();
     })
-    .setView(DEFAULT_COORDINATES, 12);
+    .setView(DEFAULT_COORDINATES, DEFAULT_ZOOM);
 
-  L.tileLayer(
-    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    },
-  ).addTo(map);
+  L.tileLayer(MAP_SETTINGS.layer, MAP_SETTINGS.attribution).addTo(map);
 
   const mainMarker = L.marker(
     DEFAULT_COORDINATES,
@@ -73,11 +81,11 @@ const initMap = () => {
 
   mainMarker.addTo(map);
 
-  createMarkers(map, similarOffers);
+  renderMarkers(map, similarOffers);
 
-  mainMarker.on('moveend', ({target}) => {
-    const {lat, lng} = target.getLatLng();
-    address.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+  mainMarker.on('move', ({target}) => {
+    const newCoordinates = target.getLatLng();
+    setAddress(newCoordinates);
   });
 
 };
