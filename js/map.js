@@ -32,11 +32,14 @@ const pinIcon = L.icon({
 
 const similarOffers = createOffers(10);
 
+let map;
+let mainMarker;
+
 const setAddress = ({lat, lng}) => {
   address.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
 };
 
-const renderMarkers = (map, offers) => {
+const renderMarkers = (offers) => {
   offers.forEach((offer) => {
     const {
       location: {
@@ -60,10 +63,20 @@ const renderMarkers = (map, offers) => {
   });
 };
 
+const resetMap = () => {
+  if (map) {
+    map.setView(DEFAULT_COORDINATES, DEFAULT_ZOOM);
+  }
+  mainMarker.setLatLng(DEFAULT_COORDINATES);
+
+  setTimeout(() => {
+    setAddress(DEFAULT_COORDINATES);
+  });
+};
+
 const initMap = () => {
-  const map = L.map('map-canvas')
+  map = L.map('map-canvas')
     .on('load', () => {
-      // activateFilters();
       setAddress(DEFAULT_COORDINATES);
       activateForm();
     })
@@ -71,7 +84,7 @@ const initMap = () => {
 
   L.tileLayer(MAP_SETTINGS.layer, MAP_SETTINGS.attribution).addTo(map);
 
-  const mainMarker = L.marker(
+  mainMarker = L.marker(
     DEFAULT_COORDINATES,
     {
       draggable: true,
@@ -81,7 +94,7 @@ const initMap = () => {
 
   mainMarker.addTo(map);
 
-  renderMarkers(map, similarOffers);
+  renderMarkers(similarOffers);
 
   mainMarker.on('move', ({target}) => {
     const newCoordinates = target.getLatLng();
@@ -90,4 +103,4 @@ const initMap = () => {
 
 };
 
-export {initMap};
+export {initMap, resetMap};

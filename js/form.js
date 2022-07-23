@@ -1,3 +1,5 @@
+import {resetMap} from './map.js';
+
 const adForm = document.querySelector('.ad-form');
 const adFormElements = adForm.children;
 const mapFilters = document.querySelector('.map__filters');
@@ -9,6 +11,8 @@ const priceSlider = adForm.querySelector('.ad-form__slider');
 const type = adForm.querySelector('#type');
 const timeFieldset = adForm.querySelector('.ad-form__element--time');
 const times = timeFieldset.querySelectorAll('select');
+const resetButton = adForm.querySelector('.ad-form__reset');
+
 const TYPES_MAX_PRICE = 100000;
 
 const TypesMinPrice = {
@@ -65,6 +69,18 @@ const onRoomsChange = () => {
 
 const onPriceChange = () => {
   pristine.validate(price);
+};
+
+const resetForm = () => {
+  adForm.reset();
+  resetMap();
+
+  priceSlider.noUiSlider.set(TypesMinPrice[type.value]);
+};
+
+const onFormReset = () => {
+  resetForm();
+  pristine.reset();
 };
 
 const initPriceSlider = () => {
@@ -132,6 +148,7 @@ const initValidation = () => {
   timeFieldset.addEventListener('change', onTimeChange);
   capacity.addEventListener('change', onRoomsChange);
   price.addEventListener('change', onPriceChange);
+  resetButton.addEventListener('click', onFormReset);
 
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();

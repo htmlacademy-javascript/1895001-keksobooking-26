@@ -39,6 +39,6 @@ const getRandomPositiveFloat = (a, b, digits = 5) => {
 };
 
 // Функция, возвращающая случайный элемент массива
-const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length - 1)];
+const getRandomArrayElement = (elements, count) => elements[getRandomPositiveInteger(0, count)];
 
 export {getRandomPositiveInteger, getRandomPositiveFloat, getRandomArrayElement};
