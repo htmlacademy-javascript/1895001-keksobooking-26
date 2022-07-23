@@ -1,6 +1,7 @@
-import {createOffers} from './data.js';
 import {generatePopup} from './generate-popup.js';
 import {activateForm, activateFilters} from './form.js'; // eslint-disable-line no-unused-vars
+import {getMultipleRandom, showAlert} from './util.js';
+import {getData} from './api.js';
 
 const address = document.querySelector('#address');
 
@@ -10,6 +11,7 @@ const DEFAULT_COORDINATES = {
 };
 
 const DEFAULT_ZOOM =  12;
+const OFFERS_COUNT = 10;
 
 const MAP_SETTINGS = {
   layer: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -29,8 +31,6 @@ const pinIcon = L.icon({
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });
-
-const similarOffers = createOffers(10);
 
 let map;
 let mainMarker;
@@ -74,10 +74,21 @@ const resetMap = () => {
   });
 };
 
+const onSuccessLoadOffers = (offers) => {
+  const currentOffers = offers;
+
+  renderMarkers(getMultipleRandom(currentOffers, OFFERS_COUNT));
+};
+
+const onFailLoadOffers = (message) => {
+  showAlert(message);
+};
+
 const initMap = () => {
   map = L.map('map-canvas')
     .on('load', () => {
       setAddress(DEFAULT_COORDINATES);
+      getData(onSuccessLoadOffers, onFailLoadOffers);
       activateForm();
     })
     .setView(DEFAULT_COORDINATES, DEFAULT_ZOOM);
@@ -94,7 +105,7 @@ const initMap = () => {
 
   mainMarker.addTo(map);
 
-  renderMarkers(similarOffers);
+  // renderMarkers(similarOffers);
 
   mainMarker.on('move', ({target}) => {
     const newCoordinates = target.getLatLng();
