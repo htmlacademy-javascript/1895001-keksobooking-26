@@ -31,9 +31,6 @@ const showAlert = (message) => {
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
 export {
-  getRandomPositiveInteger,
-  getRandomPositiveFloat,
-  getRandomArrayElement,
   getMultipleRandom,
   showAlert,
   isEscapeKey
