@@ -1,5 +1,5 @@
 import {generatePopup} from './generate-popup.js';
-import {activateForm, activateFilters} from './form.js'; // eslint-disable-line no-unused-vars
+import {activateForm} from './form.js';
 import {getMultipleRandom, showAlert} from './util.js';
 import {getData} from './api.js';
 
@@ -104,8 +104,6 @@ const initMap = () => {
   );
 
   mainMarker.addTo(map);
-
-  // renderMarkers(similarOffers);
 
   mainMarker.on('move', ({target}) => {
     const newCoordinates = target.getLatLng();

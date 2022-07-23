@@ -71,10 +71,13 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
 export {
   getRandomPositiveInteger,
   getRandomPositiveFloat,
   getRandomArrayElement,
   getMultipleRandom,
-  showAlert
+  showAlert,
+  isEscapeKey
 };
