@@ -1,3 +1,7 @@
+import {sendData} from './api.js';
+import {resetMap} from './map.js';
+import {showSubmitSuccessMessage, showSubmitErrorMessage} from './form-messages.js';
+
 const adForm = document.querySelector('.ad-form');
 const adFormElements = adForm.children;
 const mapFilters = document.querySelector('.map__filters');
@@ -9,6 +13,9 @@ const priceSlider = adForm.querySelector('.ad-form__slider');
 const type = adForm.querySelector('#type');
 const timeFieldset = adForm.querySelector('.ad-form__element--time');
 const times = timeFieldset.querySelectorAll('select');
+const submitButton = adForm.querySelector('.ad-form__submit');
+const resetButton = adForm.querySelector('.ad-form__reset');
+
 const TYPES_MAX_PRICE = 100000;
 
 const TypesMinPrice = {
@@ -65,6 +72,32 @@ const onRoomsChange = () => {
 
 const onPriceChange = () => {
   pristine.validate(price);
+};
+
+const resetForm = () => {
+  adForm.reset();
+  resetMap();
+
+  price.placeholder = TypesMinPrice[type.value];
+  priceSlider.noUiSlider.set(TypesMinPrice[type.value]);
+};
+
+const onFormReset = () => {
+  resetForm();
+  pristine.reset();
+};
+
+const onSuccessSendForm = () => {
+  submitButton.disabled = false;
+
+  resetForm();
+  showSubmitSuccessMessage();
+};
+
+const onFailSendForm = () => {
+  submitButton.disabled = false;
+
+  showSubmitErrorMessage();
 };
 
 const initPriceSlider = () => {
@@ -132,10 +165,20 @@ const initValidation = () => {
   timeFieldset.addEventListener('change', onTimeChange);
   capacity.addEventListener('change', onRoomsChange);
   price.addEventListener('change', onPriceChange);
+  resetButton.addEventListener('click', onFormReset);
 
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
-    pristine.validate();
+
+    const isValid = pristine.validate();
+
+    if (isValid) {
+      sendData(
+        onSuccessSendForm,
+        onFailSendForm,
+        new FormData(evt.target)
+      );
+    }
   });
 };
 

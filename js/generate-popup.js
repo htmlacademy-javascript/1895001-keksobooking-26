@@ -36,13 +36,13 @@ const generatePopup = ({author, offer}) => {
   const photoItem = photosContainer.querySelector('.popup__photo');
   const description = offerElement.querySelector('.popup__description');
 
-  if (offer.features.length > 0) {
+  if (offer.features) {
     renderFeatures(featuresList, offer.features);
   } else {
-    featuresList.classList.add('hidden');
+    featuresContainer.classList.add('hidden');
   }
 
-  if (offer.photos.length > 0) {
+  if (offer.photos) {
     renderPhotos(photosContainer, photoItem, offer.photos);
   } else {
     photosContainer.classList.add('hidden');
