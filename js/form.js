@@ -1,5 +1,6 @@
 import {sendData} from './api.js';
-import {resetMap} from './map.js';
+import {resetMap, resetMarkers} from './map.js';
+import {resetMapFilters} from './map-filters.js';
 import {showSubmitSuccessMessage, showSubmitErrorMessage} from './form-messages.js';
 
 const adForm = document.querySelector('.ad-form');
@@ -84,6 +85,8 @@ const resetForm = () => {
 
 const onFormReset = () => {
   resetForm();
+  resetMapFilters();
+  resetMarkers();
   pristine.reset();
 };
 
@@ -184,4 +187,10 @@ const initValidation = () => {
   });
 };
 
-export {disableForm, activateForm, activateFilters, initValidation, initPriceSlider};
+export {
+  disableForm,
+  activateForm,
+  activateFilters,
+  initValidation,
+  initPriceSlider
+};

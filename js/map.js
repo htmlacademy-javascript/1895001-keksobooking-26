@@ -2,6 +2,7 @@ import {generatePopup} from './generate-popup.js';
 import {activateFilters, activateForm} from './form.js';
 import {showAlert} from './util.js';
 import {getData} from './api.js';
+import {initFilters} from './map-filters.js';
 
 const address = document.querySelector('#address');
 
@@ -34,33 +35,38 @@ const pinIcon = L.icon({
 
 let map;
 let mainMarker;
+let markerGroup;
 
 const setAddress = ({lat, lng}) => {
   address.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
 };
 
 const renderMarkers = (offers) => {
-  offers.forEach((offer) => {
-    const {
-      location: {
-        lat,
-        lng,
-      } } = offer;
+  markerGroup.clearLayers();
 
-    const marker = L.marker(
-      {
-        lat,
-        lng,
-      },
-      {
-        icon: pinIcon,
-      }
-    );
+  offers
+    .slice(0, OFFERS_COUNT)
+    .forEach((offer) => {
+      const {
+        location: {
+          lat,
+          lng,
+        } } = offer;
 
-    marker
-      .addTo(map)
-      .bindPopup(generatePopup(offer));
-  });
+      const marker = L.marker(
+        {
+          lat,
+          lng,
+        },
+        {
+          icon: pinIcon,
+        }
+      );
+
+      marker
+        .addTo(markerGroup)
+        .bindPopup(generatePopup(offer));
+    });
 };
 
 const resetMap = () => {
@@ -76,6 +82,7 @@ const resetMap = () => {
 
 const onSuccessLoadOffers = (offers) => {
   renderMarkers(offers.slice(0, OFFERS_COUNT));
+  initFilters(offers, renderMarkers);
   activateFilters();
 };
 
@@ -94,6 +101,8 @@ const initMap = () => {
 
   L.tileLayer(MAP_SETTINGS.layer, MAP_SETTINGS.attribution).addTo(map);
 
+  markerGroup = L.layerGroup().addTo(map);
+
   mainMarker = L.marker(
     DEFAULT_COORDINATES,
     {
@@ -111,4 +120,8 @@ const initMap = () => {
 
 };
 
-export {initMap, resetMap};
+const resetMarkers = () => {
+  getData(onSuccessLoadOffers, onFailLoadOffers);
+};
+
+export {initMap, resetMap, resetMarkers};
