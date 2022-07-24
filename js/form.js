@@ -2,6 +2,7 @@ import {sendData} from './api.js';
 import {resetMap, resetMarkers} from './map.js';
 import {resetMapFilters} from './map-filters.js';
 import {showSubmitSuccessMessage, showSubmitErrorMessage} from './form-messages.js';
+import {resetMedia} from './media.js';
 
 const adForm = document.querySelector('.ad-form');
 const adFormElements = adForm.children;
@@ -87,6 +88,7 @@ const onFormReset = () => {
   resetForm();
   resetMapFilters();
   resetMarkers();
+  resetMedia();
   pristine.reset();
 };
 
@@ -97,8 +99,7 @@ const toggleSubmitButtonState = (boolean) => {
 const onSuccessSendForm = () => {
   toggleSubmitButtonState(false);
 
-  resetForm();
-  resetMapFilters();
+  onFormReset();
   showSubmitSuccessMessage();
 };
 
