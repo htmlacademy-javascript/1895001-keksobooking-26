@@ -169,6 +169,7 @@ const initValidation = () => {
   type.addEventListener('change', onTypeChange);
   timeFieldset.addEventListener('change', onTimeChange);
   capacity.addEventListener('change', onRoomsChange);
+  rooms.addEventListener('change', onRoomsChange);
   price.addEventListener('change', onPriceChange);
   resetButton.addEventListener('click', onFormReset);
 
