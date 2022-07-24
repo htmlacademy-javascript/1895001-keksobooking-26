@@ -98,6 +98,7 @@ const onSuccessSendForm = () => {
   toggleSubmitButtonState(false);
 
   resetForm();
+  resetMapFilters();
   showSubmitSuccessMessage();
 };
 

@@ -39,13 +39,16 @@ const filterByPrice = ({offer}) => {
 };
 
 const filterByFeatures = ({offer}) => {
-  const filtersFeatures = [];
   const checkedFilters = featuresFilter.querySelectorAll('input:checked');
 
-  checkedFilters.forEach((element) => filtersFeatures.push(element.value));
-  if (offer.features){
-    return filtersFeatures.every((feature) => offer.features.includes(feature));
+  if (!checkedFilters) {
+    return true;
   }
+
+  if (offer.features){
+    return Array.from(checkedFilters).every((feature) => offer.features.includes(feature.value));
+  }
+
   return false;
 };
 
