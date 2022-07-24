@@ -1,6 +1,6 @@
 import {generatePopup} from './generate-popup.js';
-import {activateForm} from './form.js';
-import {getMultipleRandom, showAlert} from './util.js';
+import {activateFilters, activateForm} from './form.js';
+import {showAlert} from './util.js';
 import {getData} from './api.js';
 
 const address = document.querySelector('#address');
@@ -75,9 +75,8 @@ const resetMap = () => {
 };
 
 const onSuccessLoadOffers = (offers) => {
-  const currentOffers = offers;
-
-  renderMarkers(getMultipleRandom(currentOffers, OFFERS_COUNT));
+  renderMarkers(offers.slice(0, OFFERS_COUNT));
+  activateFilters();
 };
 
 const onFailLoadOffers = (message) => {

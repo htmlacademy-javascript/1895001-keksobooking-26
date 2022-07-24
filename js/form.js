@@ -87,15 +87,19 @@ const onFormReset = () => {
   pristine.reset();
 };
 
+const toggleSubmitButtonState = (boolean) => {
+  submitButton.disabled = boolean;
+};
+
 const onSuccessSendForm = () => {
-  submitButton.disabled = false;
+  toggleSubmitButtonState(false);
 
   resetForm();
   showSubmitSuccessMessage();
 };
 
 const onFailSendForm = () => {
-  submitButton.disabled = false;
+  toggleSubmitButtonState(false);
 
   showSubmitErrorMessage();
 };
@@ -114,12 +118,8 @@ const initPriceSlider = () => {
     step: 1,
     connect: 'lower',
     format: {
-      to: function (value) {
-        return value.toFixed(0);
-      },
-      from: function (value) {
-        return parseFloat(value);
-      },
+      to: (value) => value.toFixed(0),
+      from: (value) => parseFloat(value),
     },
   });
 
@@ -173,6 +173,8 @@ const initValidation = () => {
     const isValid = pristine.validate();
 
     if (isValid) {
+      toggleSubmitButtonState(true);
+
       sendData(
         onSuccessSendForm,
         onFailSendForm,
