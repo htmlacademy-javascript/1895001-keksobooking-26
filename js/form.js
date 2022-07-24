@@ -1,5 +1,6 @@
 import {sendData} from './api.js';
-import {resetMap} from './map.js';
+import {resetMap, resetMarkers} from './map.js';
+import {resetMapFilters} from './map-filters.js';
 import {showSubmitSuccessMessage, showSubmitErrorMessage} from './form-messages.js';
 
 const adForm = document.querySelector('.ad-form');
@@ -84,18 +85,24 @@ const resetForm = () => {
 
 const onFormReset = () => {
   resetForm();
+  resetMapFilters();
+  resetMarkers();
   pristine.reset();
 };
 
+const toggleSubmitButtonState = (boolean) => {
+  submitButton.disabled = boolean;
+};
+
 const onSuccessSendForm = () => {
-  submitButton.disabled = false;
+  toggleSubmitButtonState(false);
 
   resetForm();
   showSubmitSuccessMessage();
 };
 
 const onFailSendForm = () => {
-  submitButton.disabled = false;
+  toggleSubmitButtonState(false);
 
   showSubmitErrorMessage();
 };
@@ -114,12 +121,8 @@ const initPriceSlider = () => {
     step: 1,
     connect: 'lower',
     format: {
-      to: function (value) {
-        return value.toFixed(0);
-      },
-      from: function (value) {
-        return parseFloat(value);
-      },
+      to: (value) => value.toFixed(0),
+      from: (value) => parseFloat(value),
     },
   });
 
@@ -173,6 +176,8 @@ const initValidation = () => {
     const isValid = pristine.validate();
 
     if (isValid) {
+      toggleSubmitButtonState(true);
+
       sendData(
         onSuccessSendForm,
         onFailSendForm,
@@ -182,4 +187,10 @@ const initValidation = () => {
   });
 };
 
-export {disableForm, activateForm, activateFilters, initValidation, initPriceSlider};
+export {
+  disableForm,
+  activateForm,
+  activateFilters,
+  initValidation,
+  initPriceSlider
+};

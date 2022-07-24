@@ -1,22 +1,29 @@
+const URL = 'https://26.javascript.pages.academy/keksobooking';
+
+const Errors = {
+  GET: 'Ошибка при загрузке других предложений. Попробуйте ещё раз',
+  SEND: 'Не удалось отправить форму. Попробуйте ещё раз',
+};
+
 const getData = (onSuccess, onFail) => fetch(
-  'https://26.javascript.pages.academy/keksobooking/data')
+  `${URL}/data`)
   .then((response) => {
     if (response.ok) {
       return response.json();
     }
 
-    onFail('Ошибка при загрузке других предложений. Попробуйте ещё раз');
+    onFail(Errors.GET);
   })
   .then((offers) => {
     onSuccess(offers);
   })
   .catch(() => {
-    onFail('Ошибка при загрузке других предложений. Попробуйте ещё раз');
+    onFail(Errors.GET);
   });
 
 const sendData = (onSuccess, onFail, body) => {
   fetch(
-    'https://26.javascript.pages.academy/keksobookin',
+    URL,
     {
       method: 'POST',
       body,
@@ -26,11 +33,11 @@ const sendData = (onSuccess, onFail, body) => {
       if (response.ok) {
         onSuccess();
       } else {
-        onFail('Не удалось отправить форму. Попробуйте ещё раз');
+        onFail(Errors.SEND);
       }
     })
     .catch(() => {
-      onFail('Не удалось отправить форму. Попробуйте ещё раз');
+      onFail(Errors.SEND);
     });
 };
 

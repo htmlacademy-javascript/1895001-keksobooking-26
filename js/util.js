@@ -1,10 +1,5 @@
 const ALERT_SHOW_TIME = 5000;
-
-const getMultipleRandom = (arr, num) => {
-  const shuffled = arr.sort(() => 0.5 - Math.random());
-
-  return shuffled.slice(0, num);
-};
+const DEBOUNCE_DELAY = 500;
 
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
@@ -30,8 +25,18 @@ const showAlert = (message) => {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
+function debounce (callback, timeoutDelay = DEBOUNCE_DELAY) {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
 export {
-  getMultipleRandom,
   showAlert,
-  isEscapeKey
+  isEscapeKey,
+  debounce
 };
