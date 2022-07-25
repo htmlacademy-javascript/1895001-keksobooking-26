@@ -110,10 +110,6 @@ const onFailSendForm = () => {
 };
 
 const initPriceSlider = () => {
-  const onTypeSelectChange = () => {
-    priceSlider.noUiSlider.set(TypesMinPrice[type.value]);
-  };
-
   noUiSlider.create(priceSlider, {
     range: {
       min: 0,
@@ -132,7 +128,6 @@ const initPriceSlider = () => {
     price.value = priceSlider.noUiSlider.get();
   });
 
-  type.addEventListener('change', onTypeSelectChange);
   priceSlider.noUiSlider.on('change', onPriceChange);
 };
 
