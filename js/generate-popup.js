@@ -29,12 +29,12 @@ const renderPhotos = (block, item, photos) => {
 };
 
 const generatePopup = ({author, offer}) => {
-  const offerElement = offerCardTemplate.cloneNode(true);
-  const featuresContainer = offerElement.querySelector('.popup__features');
+  const offerCard = offerCardTemplate.cloneNode(true);
+  const featuresContainer = offerCard.querySelector('.popup__features');
   const featuresList = featuresContainer.querySelectorAll('.popup__feature');
-  const photosContainer = offerElement.querySelector('.popup__photos');
+  const photosContainer = offerCard.querySelector('.popup__photos');
   const photoItem = photosContainer.querySelector('.popup__photo');
-  const description = offerElement.querySelector('.popup__description');
+  const description = offerCard.querySelector('.popup__description');
 
   if (offer.features) {
     renderFeatures(featuresList, offer.features);
@@ -56,15 +56,15 @@ const generatePopup = ({author, offer}) => {
     description.classList.add('hidden');
   }
 
-  offerElement.querySelector('.popup__avatar').src = author.avatar;
-  offerElement.querySelector('.popup__title').textContent = offer.title;
-  offerElement.querySelector('.popup__text--address').textContent = offer.address;
-  offerElement.querySelector('.popup__text--price').innerHTML = `${offer.price} <span>₽/ночь</span>`;
-  offerElement.querySelector('.popup__type').textContent = offerTypes[offer.type];
-  offerElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
-  offerElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
+  offerCard.querySelector('.popup__avatar').src = author.avatar;
+  offerCard.querySelector('.popup__title').textContent = offer.title;
+  offerCard.querySelector('.popup__text--address').textContent = offer.address;
+  offerCard.querySelector('.popup__text--price').innerHTML = `${offer.price} <span>₽/ночь</span>`;
+  offerCard.querySelector('.popup__type').textContent = offerTypes[offer.type];
+  offerCard.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
+  offerCard.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
 
-  return offerElement;
+  return offerCard;
 };
 
 export {generatePopup};

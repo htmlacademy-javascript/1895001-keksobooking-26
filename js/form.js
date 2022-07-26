@@ -9,9 +9,9 @@ const MAX_ROOMS_VALUE = 100;
 const NO_GUESTS_VALUE = 0;
 
 const adForm = document.querySelector('.ad-form');
-const adFormElements = adForm.children;
+const adFormChilds = adForm.children;
 const mapFilters = document.querySelector('.map__filters');
-const mapFiltersElements = mapFilters.children;
+const mapFiltersChilds = mapFilters.children;
 const rooms = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
 const price = adForm.querySelector('#price');
@@ -143,20 +143,20 @@ const disableForm = () => {
   adForm.classList.add('ad-form--disabled');
   mapFilters.classList.add('map__filters--disabled');
 
-  toggleElement(adFormElements, true);
-  toggleElement(mapFiltersElements, true);
+  toggleElement(adFormChilds, true);
+  toggleElement(mapFiltersChilds, true);
 };
 
 const activateForm = () => {
   adForm.classList.remove('ad-form--disabled');
 
-  toggleElement(adFormElements, false);
+  toggleElement(adFormChilds, false);
 };
 
 const activateFilters = () => {
   mapFilters.classList.remove('map__filters--disabled');
 
-  toggleElement(mapFiltersElements, false);
+  toggleElement(mapFiltersChilds, false);
 };
 
 const initValidation = () => {
