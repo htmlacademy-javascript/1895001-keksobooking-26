@@ -4,6 +4,8 @@ import {resetMapFilters} from './map-filters.js';
 import {showSubmitSuccessMessage, showSubmitErrorMessage} from './form-messages.js';
 import {resetMedia} from './media.js';
 
+const TYPES_MAX_PRICE = 100000;
+
 const adForm = document.querySelector('.ad-form');
 const adFormElements = adForm.children;
 const mapFilters = document.querySelector('.map__filters');
@@ -17,8 +19,6 @@ const timeFieldset = adForm.querySelector('.ad-form__element--time');
 const times = timeFieldset.querySelectorAll('select');
 const submitButton = adForm.querySelector('.ad-form__submit');
 const resetButton = adForm.querySelector('.ad-form__reset');
-
-const TYPES_MAX_PRICE = 100000;
 
 const TypesMinPrice = {
   bungalow: 0,
