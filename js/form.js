@@ -5,6 +5,8 @@ import {showSubmitSuccessMessage, showSubmitErrorMessage} from './form-messages.
 import {resetMedia} from './media.js';
 
 const TYPES_MAX_PRICE = 100000;
+const MAX_ROOMS_VALUE = 100;
+const NO_GUESTS_VALUE = 0;
 
 const adForm = document.querySelector('.ad-form');
 const adFormElements = adForm.children;
@@ -44,11 +46,11 @@ const guestsCapacityMap = {
 const validateCapacity = () => guestsCapacityMap[rooms.value].includes(capacity.value);
 
 const getCapacityErrorMessage = () => {
-  if (rooms.value === '100') {
+  if (rooms.value === MAX_ROOMS_VALUE) {
     return 'Не для гостей';
   }
 
-  return capacity.value === '0' ? 'Это жилье для гостей' : 'Мало комнат';
+  return capacity.value === NO_GUESTS_VALUE ? 'Это жилье для гостей' : 'Мало комнат';
 };
 
 const validatePrice = (value) => value <= TYPES_MAX_PRICE && value >= TypesMinPrice[type.value];
