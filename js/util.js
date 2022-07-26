@@ -25,7 +25,7 @@ const showAlert = (message) => {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-function debounce (callback, timeoutDelay = DEBOUNCE_DELAY) {
+const debounce = (callback, timeoutDelay = DEBOUNCE_DELAY) => {
   let timeoutId;
 
   return (...rest) => {
@@ -33,7 +33,7 @@ function debounce (callback, timeoutDelay = DEBOUNCE_DELAY) {
 
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
-}
+};
 
 export {
   showAlert,

@@ -4,8 +4,6 @@ import {showAlert} from './util.js';
 import {getData} from './api.js';
 import {initFilters} from './map-filters.js';
 
-const address = document.querySelector('#address');
-
 const DEFAULT_COORDINATES = {
   lat: 35.68483,
   lng: 139.75248
@@ -20,6 +18,8 @@ const MAP_SETTINGS = {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   },
 };
+
+const address = document.querySelector('#address');
 
 const mainPinIcon = L.icon({
   iconUrl: './img/main-pin.svg',

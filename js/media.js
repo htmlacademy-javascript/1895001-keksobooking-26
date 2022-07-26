@@ -6,6 +6,11 @@ const avatarDefault = avatarPreview.src;
 const photoFileChooser = document.querySelector('.ad-form__upload input[type=file]');
 const photoPreview = document.querySelector('.ad-form__photo');
 
+const PhotoSize = {
+  width: '70px',
+  height: '70px',
+};
+
 const onAvatarChange = () => {
   const file = avatarFileChooser.files[0];
   const fileName = file.name.toLowerCase();
@@ -25,8 +30,8 @@ const onPhotoChange = () => {
 
   if (matches) {
     const photo = document.createElement('img');
-    photo.style.width = '70px';
-    photo.style.height = '70px';
+    photo.style.width = PhotoSize.width;
+    photo.style.height = PhotoSize.height;
     photo.src = URL.createObjectURL(file);
     photoPreview.appendChild(photo);
   }

@@ -4,10 +4,14 @@ import {resetMapFilters} from './map-filters.js';
 import {showSubmitSuccessMessage, showSubmitErrorMessage} from './form-messages.js';
 import {resetMedia} from './media.js';
 
+const TYPES_MAX_PRICE = 100000;
+const MAX_ROOMS_VALUE = 100;
+const NO_GUESTS_VALUE = 0;
+
 const adForm = document.querySelector('.ad-form');
-const adFormElements = adForm.children;
+const adFormChilds = adForm.children;
 const mapFilters = document.querySelector('.map__filters');
-const mapFiltersElements = mapFilters.children;
+const mapFiltersChilds = mapFilters.children;
 const rooms = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
 const price = adForm.querySelector('#price');
@@ -17,8 +21,6 @@ const timeFieldset = adForm.querySelector('.ad-form__element--time');
 const times = timeFieldset.querySelectorAll('select');
 const submitButton = adForm.querySelector('.ad-form__submit');
 const resetButton = adForm.querySelector('.ad-form__reset');
-
-const TYPES_MAX_PRICE = 100000;
 
 const TypesMinPrice = {
   bungalow: 0,
@@ -44,11 +46,11 @@ const guestsCapacityMap = {
 const validateCapacity = () => guestsCapacityMap[rooms.value].includes(capacity.value);
 
 const getCapacityErrorMessage = () => {
-  if (rooms.value === '100') {
+  if (rooms.value === MAX_ROOMS_VALUE) {
     return 'Не для гостей';
   }
 
-  return capacity.value === '0' ? 'Это жилье для гостей' : 'Мало комнат';
+  return capacity.value === NO_GUESTS_VALUE ? 'Это жилье для гостей' : 'Мало комнат';
 };
 
 const validatePrice = (value) => value <= TYPES_MAX_PRICE && value >= TypesMinPrice[type.value];
@@ -141,20 +143,20 @@ const disableForm = () => {
   adForm.classList.add('ad-form--disabled');
   mapFilters.classList.add('map__filters--disabled');
 
-  toggleElement(adFormElements, true);
-  toggleElement(mapFiltersElements, true);
+  toggleElement(adFormChilds, true);
+  toggleElement(mapFiltersChilds, true);
 };
 
 const activateForm = () => {
   adForm.classList.remove('ad-form--disabled');
 
-  toggleElement(adFormElements, false);
+  toggleElement(adFormChilds, false);
 };
 
 const activateFilters = () => {
   mapFilters.classList.remove('map__filters--disabled');
 
-  toggleElement(mapFiltersElements, false);
+  toggleElement(mapFiltersChilds, false);
 };
 
 const initValidation = () => {
